@@ -39,7 +39,6 @@ public class Torus {
         return grid;
     }
 
-    // Berechnung des Synchronisationsgrads R
     public double calculateSynchronization() {
         double realSum = 0;
         double imagSum = 0;
@@ -47,7 +46,7 @@ public class Torus {
 
         for (Firefly[] row : grid) {
             for (Firefly firefly : row) {
-                double phase = firefly.getPhase() * 2 * Math.PI; // Phase in Radiant
+                double phase = firefly.getPhase() * 2 * Math.PI;
                 realSum += Math.cos(phase);
                 imagSum += Math.sin(phase);
             }
@@ -56,12 +55,11 @@ public class Torus {
         double averageReal = realSum / totalFireflies;
         double averageImag = imagSum / totalFireflies;
 
-        // Amplitude des Durchschnittszeigers ist R
         return Math.sqrt(averageReal * averageReal + averageImag * averageImag);
     }
 
     private double lorentzRandom() {
-        double value; // Breite der Verteilung
+        double value;
         value = 0.05 + Math.random() * 0.1;
         return value;
     }

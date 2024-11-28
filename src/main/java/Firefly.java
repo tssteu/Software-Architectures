@@ -29,24 +29,18 @@ public class Firefly implements Runnable {
     @Override
     public void run() {
         while (running) {
-            // Phase aktualisieren
-            //phase += naturalFrequency;
-            // if (phase >= 1.0) phase -= 1.0; // Phase zurücksetzen
-
-            // Kuramoto-Modell: Einfluss der Nachbarn
             double sum = 0;
+
             for (Firefly neighbor : neighbors) {
                 sum += Math.sin(neighbor.phase - this.phase);
             }
-            // oszillators[i].phase + dt * (oszillators[i].omega + (K / N) * sum);
-            phase += naturalFrequency + ((cupplingStrength / neighbors.size()) * sum); // Kopplungsstärke (K) * Einfluss
-            // System.out.println(naturalFrequency + ((0.05 / neighbors.size()) * sum));
 
-            phase = phase % (2 * Math.PI); // Phase auf [0, 2*PI] begrenzen
+            phase += naturalFrequency + ((cupplingStrength / neighbors.size()) * sum);
 
-            // Schlafzeit für Simulation
+            phase = phase % (2 * Math.PI);
+
             try {
-                Thread.sleep(50); // Simuliert kontinuierlichen Prozess
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -54,17 +48,11 @@ public class Firefly implements Runnable {
     }
 
     public boolean isOn() {
-        // Gelb, wenn Phase < 3.1415; Weiß sonst
         return phase < Math.PI;
     }
 
-    // Neue Methode, um die aktuelle Phase zu holen
     public double getPhase() {
         return phase;
-    }
-
-    public double getNaturalFrequency() {
-        return naturalFrequency;
     }
 
     public static double getCupplingStrength() {

@@ -5,18 +5,15 @@ public class FireflySimulation {
 
         Torus torus = new Torus(gridSize, baseFrequency);
 
-        // Threads starten
         for (Firefly[] row : torus.getGrid()) {
             for (Firefly firefly : row) {
                 new Thread(firefly).start();
             }
         }
 
-        // GUI starten
         FireflyGUI gui = new FireflyGUI(torus);
         gui.setVisible(true);
 
-        // Animation-Loop mit Synchronisationsausgabe
         new Thread(() -> {
             while (true) {
                 double synchronization = torus.calculateSynchronization();
@@ -29,11 +26,10 @@ public class FireflySimulation {
             }
         }).start();
 
-        // GUI-Aktualisierung
         while (true) {
             gui.repaint();
             try {
-                Thread.sleep(100); // Refresh alle 100ms
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
