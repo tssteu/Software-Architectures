@@ -19,7 +19,7 @@ public class FireflyGUI extends JFrame {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 Firefly firefly = grid[i][j];
-                g.setColor(firefly.isOn() ? Color.YELLOW : Color.WHITE);
+                g.setColor(firefly.isOn() ? Color.GREEN : Color.WHITE);
                 g.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
             }
         }

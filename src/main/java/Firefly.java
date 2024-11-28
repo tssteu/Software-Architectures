@@ -7,9 +7,10 @@ public class Firefly implements Runnable {
     private final int x, y; // Position im Torus
     private final List<Firefly> neighbors; // Nachbarn
     private boolean running;
+    private static double cupplingStrength = 1.0;
 
     public Firefly(double naturalFrequency, int x, int y) {
-        this.phase = Math.random(); // Startphase zufällig
+        this.phase = Math.random() * 2 * Math.PI; // Startphase zufällig
         this.naturalFrequency = naturalFrequency;
         this.x = x;
         this.y = y;
@@ -29,15 +30,19 @@ public class Firefly implements Runnable {
     public void run() {
         while (running) {
             // Phase aktualisieren
-            phase += naturalFrequency;
-            if (phase >= 1.0) phase -= 1.0; // Phase zurücksetzen
+            //phase += naturalFrequency;
+            // if (phase >= 1.0) phase -= 1.0; // Phase zurücksetzen
 
             // Kuramoto-Modell: Einfluss der Nachbarn
-            double influence = 0;
+            double sum = 0;
             for (Firefly neighbor : neighbors) {
-                influence += Math.sin(2 * Math.PI * (neighbor.phase - this.phase));
+                sum += Math.sin(neighbor.phase - this.phase);
             }
-            phase += 0.02 * influence; // Kopplungsstärke (K) * Einfluss
+            // oszillators[i].phase + dt * (oszillators[i].omega + (K / N) * sum);
+            phase += naturalFrequency + ((cupplingStrength / neighbors.size()) * sum); // Kopplungsstärke (K) * Einfluss
+            // System.out.println(naturalFrequency + ((0.05 / neighbors.size()) * sum));
+
+            phase = phase % (2 * Math.PI); // Phase auf [0, 2*PI] begrenzen
 
             // Schlafzeit für Simulation
             try {
@@ -49,12 +54,20 @@ public class Firefly implements Runnable {
     }
 
     public boolean isOn() {
-        // Gelb, wenn Phase < 0.5; Weiß sonst
-        return phase < 0.5;
+        // Gelb, wenn Phase < 3.1415; Weiß sonst
+        return phase < Math.PI;
     }
 
     // Neue Methode, um die aktuelle Phase zu holen
     public double getPhase() {
         return phase;
+    }
+
+    public double getNaturalFrequency() {
+        return naturalFrequency;
+    }
+
+    public static double getCupplingStrength() {
+        return cupplingStrength;
     }
 }

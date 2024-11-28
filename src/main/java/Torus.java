@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Torus {
     private final int size;
     private final Firefly[][] grid;
+
+    private List<Double> naturalFrequencies = new ArrayList<>();
 
     public Torus(int size, double baseFrequency) {
         this.size = size;
@@ -9,9 +14,14 @@ public class Torus {
         // Glühwürmchen erstellen
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                grid[i][j] = new Firefly(baseFrequency + Math.random() * 0.01, i, j);
+                double value = lorentzRandom();
+                naturalFrequencies.add(value);
+                grid[i][j] = new Firefly(value, i, j);
             }
         }
+
+        System.out.printf("Standardabweichung: %.3f%n", calculateStandardDeviation());
+        System.out.printf("CupplingStrength / (2 * PI): %.3f%n", Firefly.getCupplingStrength() / (2 * Math.PI));
 
         // Nachbarn verknüpfen
         for (int i = 0; i < size; i++) {
@@ -48,5 +58,17 @@ public class Torus {
 
         // Amplitude des Durchschnittszeigers ist R
         return Math.sqrt(averageReal * averageReal + averageImag * averageImag);
+    }
+
+    private double lorentzRandom() {
+        double value; // Breite der Verteilung
+        value = 0.05 + Math.random() * 0.1;
+        return value;
+    }
+
+    public double calculateStandardDeviation() {
+        double mean = naturalFrequencies.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double variance = naturalFrequencies.stream().mapToDouble(f -> Math.pow(f - mean, 2)).average().orElse(0.0);
+        return Math.sqrt(variance);
     }
 }
