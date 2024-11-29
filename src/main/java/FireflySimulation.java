@@ -1,37 +1,16 @@
 public class FireflySimulation {
     public static void main(String[] args) {
-        int gridSize = 20;
-        double baseFrequency = 0.05;
+        int gridSize = 5;
 
-        Torus torus = new Torus(gridSize, baseFrequency);
+        FireflyClient client = new FireflyClient("localhost", 8080);
 
-        for (Firefly[] row : torus.getGrid()) {
-            for (Firefly firefly : row) {
+
+        // Firefly-Threads starten
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                double frequency = 0.05 + Math.random() * 0.1; // Zufällige Frequenz
+                Firefly firefly = new Firefly(frequency, i, j, client);
                 new Thread(firefly).start();
-            }
-        }
-
-        FireflyGUI gui = new FireflyGUI(torus);
-        gui.setVisible(true);
-
-        new Thread(() -> {
-            while (true) {
-                double synchronization = torus.calculateSynchronization();
-                System.out.printf("Synchronisation: R = %.3f%n", synchronization);
-                try {
-                    Thread.sleep(1000); // Ausgabe alle 1000 ms
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }).start();
-
-        while (true) {
-            gui.repaint();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
             }
         }
     }

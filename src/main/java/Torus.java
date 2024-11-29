@@ -16,7 +16,7 @@ public class Torus {
             for (int j = 0; j < size; j++) {
                 double value = lorentzRandom();
                 naturalFrequencies.add(value);
-                grid[i][j] = new Firefly(value, i, j);
+                //grid[i][j] = new Firefly(value, i, j);
             }
         }
 
