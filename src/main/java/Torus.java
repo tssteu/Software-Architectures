@@ -7,7 +7,7 @@ public class Torus {
 
     private List<Double> naturalFrequencies = new ArrayList<>();
 
-    public Torus(int size, double baseFrequency) {
+    public Torus(int size, double baseFrequency, FireflyClient client) {
         this.size = size;
         this.grid = new Firefly[size][size];
 
@@ -16,7 +16,7 @@ public class Torus {
             for (int j = 0; j < size; j++) {
                 double value = lorentzRandom();
                 naturalFrequencies.add(value);
-                //grid[i][j] = new Firefly(value, i, j);
+                grid[i][j] = new Firefly(value, i, j, client);
             }
         }
 

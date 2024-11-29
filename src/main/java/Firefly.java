@@ -36,7 +36,8 @@ public class Firefly implements Runnable {
             List<Double> neighborPhases = client.getPhases();
             double sum = 0;
 
-            System.out.println(neighborPhases.stream().map(Object::toString).collect(Collectors.joining(" | ")));
+            System.out.println(neighborPhases.size());
+            // System.out.println(neighborPhases.stream().map(Object::toString).collect(Collectors.joining(" | ")));
 
             for (double neighborPhase : neighborPhases) {
                 sum += Math.sin(neighborPhase - phase);
