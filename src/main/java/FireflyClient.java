@@ -4,6 +4,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FireflyClient {
     private final FireflyServiceGrpc.FireflyServiceBlockingStub stub;
@@ -17,6 +18,12 @@ public class FireflyClient {
 
     public List<Double> getPhases() {
         return stub.getPhases(Empty.newBuilder().build()).getPhasesList();
+    }
+
+    public List<Double> getNeighborPhases(List<Firefly> neighbors) {
+        return neighbors.stream()
+                .map(Firefly::getPhase)
+                .collect(Collectors.toList());
     }
 
     public void updatePhase(double phase) {

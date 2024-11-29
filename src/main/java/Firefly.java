@@ -33,17 +33,17 @@ public class Firefly implements Runnable {
     public void run() {
         while (running) {
             // Phasen der Nachbarn abrufen
-            List<Double> neighborPhases = client.getPhases();
+            List<Double> neighborPhases = client.getNeighborPhases(neighbors);
             double sum = 0;
 
-            System.out.println(neighborPhases.size());
+            // System.out.println(neighborPhases.size());
             // System.out.println(neighborPhases.stream().map(Object::toString).collect(Collectors.joining(" | ")));
 
             for (double neighborPhase : neighborPhases) {
                 sum += Math.sin(neighborPhase - phase);
             }
 
-            System.out.println(phase);
+            // System.out.println(phase);
 
             // Synchronisation berechnen
             if (!neighborPhases.isEmpty()) {

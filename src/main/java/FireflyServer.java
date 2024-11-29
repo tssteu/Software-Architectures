@@ -23,6 +23,7 @@ public class FireflyServer extends FireflyServiceGrpc.FireflyServiceImplBase {
 
     @Override
     public void getPhases(Empty request, io.grpc.stub.StreamObserver<PhaseList> responseObserver) {
+        System.out.println(request);
         PhaseList.Builder responseBuilder = PhaseList.newBuilder();
         synchronized (phases) {
             responseBuilder.addAllPhases(phases);
