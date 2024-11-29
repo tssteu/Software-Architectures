@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class Firefly implements Runnable {
     private final FireflyClient client;
@@ -34,6 +35,8 @@ public class Firefly implements Runnable {
             // Phasen der Nachbarn abrufen
             List<Double> neighborPhases = client.getPhases();
             double sum = 0;
+
+            System.out.println(neighborPhases.stream().map(Object::toString).collect(Collectors.joining(" | ")));
 
             for (double neighborPhase : neighborPhases) {
                 sum += Math.sin(neighborPhase - phase);
@@ -70,5 +73,9 @@ public class Firefly implements Runnable {
 
     public static double getCupplingStrength() {
         return cupplingStrength;
+    }
+
+    public FireflyClient getClient() {
+        return client;
     }
 }

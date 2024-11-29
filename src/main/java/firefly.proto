@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "com.example.firefly";
+option java_outer_classname = "FireflyProto";
+
+service FireflyService {
+  rpc UpdatePhase(PhaseRequest) returns (Empty);
+  rpc GetPhases(Empty) returns (PhaseList);
+}
+
+message PhaseRequest {
+  double phase = 1;
+}
+
+message Empty {}
+
+message PhaseList {
+  repeated double phases = 1;
+}

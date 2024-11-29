@@ -4,7 +4,6 @@ public class FireflySimulation {
 
         FireflyClient client = new FireflyClient("localhost", 8080);
 
-
         // Firefly-Threads starten
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
