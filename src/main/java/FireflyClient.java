@@ -4,7 +4,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FireflyClient {
     private final FireflyServiceGrpc.FireflyServiceBlockingStub stub;
@@ -16,17 +15,11 @@ public class FireflyClient {
         stub = FireflyServiceGrpc.newBlockingStub(channel);
     }
 
-    public List<Double> getPhases() {
-        return stub.getPhases(Empty.newBuilder().build()).getPhasesList();
+    public List<Double> getPhases(int x, int y) {
+        return stub.getPhases(GetPhase.newBuilder().setX(x).setY(y).build()).getPhasesList();
     }
 
-    public List<Double> getNeighborPhases(List<Firefly> neighbors) {
-        return neighbors.stream()
-                .map(Firefly::getPhase)
-                .collect(Collectors.toList());
-    }
-
-    public void updatePhase(double phase) {
-        stub.updatePhase(PhaseRequest.newBuilder().setPhase(phase).build());
+    public void updatePhase(double phase, int x, int y) {
+        Empty message = stub.updatePhase(PhaseRequest.newBuilder().setPhase(phase).setX(x).setY(y).build());
     }
 }

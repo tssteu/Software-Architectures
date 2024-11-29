@@ -7,7 +7,7 @@ public class Torus {
 
     private List<Double> naturalFrequencies = new ArrayList<>();
 
-    public Torus(int size, double baseFrequency, FireflyClient client) {
+    public Torus(int size, FireflyClient client) {
         this.size = size;
         this.grid = new Firefly[size][size];
 

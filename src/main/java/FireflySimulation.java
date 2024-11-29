@@ -1,12 +1,12 @@
 public class FireflySimulation {
     public static void main(String[] args) {
         int gridSize = 10;
-        double baseFrequency = 0.05;
 
         FireflyClient client = new FireflyClient("localhost", 8080);
 
         // Torus erstellen und füllen
-        Torus torus = new Torus(gridSize, baseFrequency, client);
+        Torus torus = new Torus(gridSize, client);
+
 
         // Firefly-Threads starten
         Firefly[][] grid = torus.getGrid();

@@ -5,11 +5,18 @@ option java_outer_classname = "FireflyProto";
 
 service FireflyService {
   rpc UpdatePhase(PhaseRequest) returns (Empty);
-  rpc GetPhases(Empty) returns (PhaseList);
+  rpc GetPhases(GetPhase) returns (PhaseList);
 }
 
 message PhaseRequest {
   double phase = 1;
+  int32 x = 2;
+  int32 y = 3;
+}
+
+message GetPhase {
+  int32 x = 1;
+  int32 y = 2;
 }
 
 message Empty {}

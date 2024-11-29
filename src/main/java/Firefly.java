@@ -9,16 +9,17 @@ public class Firefly implements Runnable {
     private final int x, y; // Position im Torus
     private final List<Firefly> neighbors; // Nachbarn
     private boolean running;
-    private static double cupplingStrength = 1.0;
+    private static double cupplingStrength = 0.7;
 
     public Firefly(double naturalFrequency, int x, int y, FireflyClient client) {
-        this.phase = Math.random() * 2 * Math.PI; // Startphase zufällig
+        this.phase = Math.random() * 2 * Math.PI;
         this.naturalFrequency = naturalFrequency;
         this.x = x;
         this.y = y;
         this.neighbors = new CopyOnWriteArrayList<>();
         this.running = true;
         this.client = client;
+        sendPhaseToServer();
     }
 
     public void addNeighbor(Firefly neighbor) {
@@ -32,8 +33,9 @@ public class Firefly implements Runnable {
     @Override
     public void run() {
         while (running) {
+            client.updatePhase(phase, x, y);
             // Phasen der Nachbarn abrufen
-            List<Double> neighborPhases = client.getNeighborPhases(neighbors);
+            List<Double> neighborPhases = client.getPhases(x, y);
             double sum = 0;
 
             // System.out.println(neighborPhases.size());
@@ -54,7 +56,7 @@ public class Firefly implements Runnable {
             phase = phase % (2 * Math.PI);
 
             // Eigene Phase an den Server senden
-            client.updatePhase(phase);
+            client.updatePhase(phase, x, y);
 
             try {
                 Thread.sleep(50);
@@ -78,5 +80,9 @@ public class Firefly implements Runnable {
 
     public FireflyClient getClient() {
         return client;
+    }
+
+    public void sendPhaseToServer() {
+        client.updatePhase(phase, x, y);
     }
 }
