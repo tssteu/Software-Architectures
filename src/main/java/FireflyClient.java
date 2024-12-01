@@ -7,7 +7,6 @@ import java.util.List;
 
 public class FireflyClient {
     private final FireflyServiceGrpc.FireflyServiceBlockingStub stub;
-
     public FireflyClient(String host, int port) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
