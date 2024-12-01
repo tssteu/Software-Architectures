@@ -21,7 +21,7 @@ public class Torus {
         }
 
         System.out.printf("Standardabweichung: %.3f%n", calculateStandardDeviation());
-        System.out.printf("CupplingStrength / (2 * PI): %.3f%n", Firefly.getCupplingStrength() / (2 * Math.PI));
+        System.out.printf("CupplingStrength / (2 * PI): %.3f%n", Firefly.getCouplingStrength() / (2 * Math.PI));
 
         // Nachbarn verknüpfen
         for (int i = 0; i < size; i++) {

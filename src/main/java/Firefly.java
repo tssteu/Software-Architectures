@@ -1,15 +1,14 @@
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 public class Firefly implements Runnable {
     private final FireflyClient client;
-    private double phase; // Phase (theta)
-    private double naturalFrequency; // Natürliche Frequenz
-    private final int x, y; // Position im Torus
-    private final List<Firefly> neighbors; // Nachbarn
+    private double phase;
+    private double naturalFrequency;
+    private final int x, y;
+    private final List<Firefly> neighbors;
     private boolean running;
-    private static double cupplingStrength = 0.5;
+    private static double couplingStrength = 0.5;
 
     public Firefly(double naturalFrequency, int x, int y, FireflyClient client) {
         this.phase = Math.random() * 2 * Math.PI;
@@ -22,67 +21,42 @@ public class Firefly implements Runnable {
         sendPhaseToServer();
     }
 
-    public void addNeighbor(Firefly neighbor) {
-        neighbors.add(neighbor);
-    }
-
-    public void stop() {
-        running = false;
-    }
-
+    public void addNeighbor(Firefly neighbor) { neighbors.add(neighbor); }
+    
     @Override
     public void run() {
-        while (running) {
+        while(running) {
             client.updatePhase(phase, x, y);
-            // Phasen der Nachbarn abrufen
+            
             List<Double> neighborPhases = client.getPhases(x, y);
             double sum = 0;
-
-            // System.out.println(neighborPhases.size());
-            // System.out.println(neighborPhases.stream().map(Object::toString).collect(Collectors.joining(" | ")));
 
             for (double neighborPhase : neighborPhases) {
                 sum += Math.sin(neighborPhase - phase);
             }
-
-            // System.out.println(phase);
-
-            // Synchronisation berechnen
+            
             if (!neighborPhases.isEmpty()) {
-                phase += naturalFrequency + (Firefly.getCupplingStrength() / neighborPhases.size()) * sum;
+                phase += naturalFrequency + (Firefly.getCouplingStrength() / neighborPhases.size()) * sum;
             }
 
-            // Phase normalisieren
             phase = phase % (2 * Math.PI);
-
-            // Eigene Phase an den Server senden
             client.updatePhase(phase, x, y);
 
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {
+            } catch(InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
     }
 
-    public boolean isOn() {
-        return phase < Math.PI;
-    }
+    public boolean isOn() { return phase < Math.PI; }
 
-    public double getPhase() {
-        return phase;
-    }
+    public double getPhase() { return phase; }
 
-    public static double getCupplingStrength() {
-        return cupplingStrength;
-    }
+    public static double getCouplingStrength() { return couplingStrength; }
 
-    public FireflyClient getClient() {
-        return client;
-    }
+    public FireflyClient getClient() { return client; }
 
-    public void sendPhaseToServer() {
-        client.updatePhase(phase, x, y);
-    }
+    public void sendPhaseToServer() { client.updatePhase(phase, x, y); }
 }
