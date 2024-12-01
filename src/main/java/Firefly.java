@@ -9,7 +9,7 @@ public class Firefly implements Runnable {
     private final int x, y; // Position im Torus
     private final List<Firefly> neighbors; // Nachbarn
     private boolean running;
-    private static double cupplingStrength = 0.7;
+    private static double cupplingStrength = 0.5;
 
     public Firefly(double naturalFrequency, int x, int y, FireflyClient client) {
         this.phase = Math.random() * 2 * Math.PI;
